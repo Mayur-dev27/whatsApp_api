@@ -1,5 +1,8 @@
 package com.whatsapp.SpringDemo.Service;
 
+import java.util.List;
+
+import com.whatsapp.SpringDemo.RequestDTO.SerachRequest;
 import com.whatsapp.SpringDemo.RequestDTO.UserRegisRequest;
 import com.whatsapp.SpringDemo.RequestDTO.UserRequest;
 import com.whatsapp.SpringDemo.ResponseDTO.UserRegisResponse;
@@ -24,4 +27,6 @@ public interface UserService {
 	public void addContact(Long userId, Long contactId);
 	
 	public void removeContact(Long userId, Long contactId);
+	
+	public List<UserResponse> searchUserFilter(SerachRequest request);
 }

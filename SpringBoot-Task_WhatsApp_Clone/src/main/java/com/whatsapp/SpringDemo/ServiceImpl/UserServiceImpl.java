@@ -1,7 +1,9 @@
 package com.whatsapp.SpringDemo.ServiceImpl;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,11 +17,15 @@ import com.whatsapp.SpringDemo.Entity.User;
 import com.whatsapp.SpringDemo.JWTSecurity.JwtService;
 import com.whatsapp.SpringDemo.Repository.RoleRepository;
 import com.whatsapp.SpringDemo.Repository.UserRepository;
+import com.whatsapp.SpringDemo.RequestDTO.SerachRequest;
 import com.whatsapp.SpringDemo.RequestDTO.UserRegisRequest;
 import com.whatsapp.SpringDemo.RequestDTO.UserRequest;
 import com.whatsapp.SpringDemo.ResponseDTO.UserRegisResponse;
 import com.whatsapp.SpringDemo.ResponseDTO.UserResponse;
 import com.whatsapp.SpringDemo.Service.UserService;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -36,6 +42,8 @@ public class UserServiceImpl implements UserService{
 	@Autowired
 	private JwtService jwtService;
 	
+	@Autowired
+	private EntityManager entityManager;
 	
 	private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		
@@ -227,6 +235,51 @@ public class UserServiceImpl implements UserService{
 		} catch (Exception e) {
 			throw new RuntimeException("Error occure while removing user.."+e.getMessage());
 		}
+	}
+
+	@Override
+	public List<UserResponse> searchUserFilter(SerachRequest request) {
+		String field = request.getField();
+		String value = request.getValue();
+		String condition = request.getCondition();
+		int pageNo = request.getPage();
+		int pSize = request.getSize();
+		
+		try {
+			String query = "select u from User u where ";
+    		switch (condition.toLowerCase()) {
+			case "stratswith":
+				query+="m."+field+" LIKE :value";
+				value = value+"%";
+				break;
+			case "endswith":
+				query+="m."+field+" LIKE :value";
+				value="%"+value;
+				break;
+			case "contains":
+				query+="m."+field+" LIKE :value";
+				value = "%"+value+"%";
+				break;
+			case "exact":
+				query+="m."+field+" = :value";
+				break;
+			default:
+				throw new IllegalArgumentException("Invalid condition: "+condition);
+			}
+    		
+    		TypedQuery<User> q = entityManager.createQuery(query,User.class);
+    		q.setParameter("value", value);
+    		q.setFirstResult(pageNo*pSize);
+    		q.setMaxResults(pSize);
+    		
+    		List<User> users = q.getResultList();
+    		
+    		return users.stream().map(user -> new UserResponse(user.getUserId(),user.getFullName(),user.getEmail(),user.isOnline())).collect(Collectors.toList());
+			
+		} catch (Exception e) {
+			throw new RuntimeException("Error while searchUserFilter.."+e.getMessage());
+		}
+		
 	}
 
 
