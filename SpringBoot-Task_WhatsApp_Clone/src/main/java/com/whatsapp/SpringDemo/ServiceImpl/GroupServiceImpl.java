@@ -1,6 +1,8 @@
 package com.whatsapp.SpringDemo.ServiceImpl;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,8 +12,12 @@ import com.whatsapp.SpringDemo.Entity.User;
 import com.whatsapp.SpringDemo.Repository.GroupRepository;
 import com.whatsapp.SpringDemo.Repository.UserRepository;
 import com.whatsapp.SpringDemo.RequestDTO.GroupRequest;
+import com.whatsapp.SpringDemo.RequestDTO.SerachRequest;
 import com.whatsapp.SpringDemo.ResponseDTO.GroupResponse;
 import com.whatsapp.SpringDemo.Service.GroupService;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 
 @Service
 public class GroupServiceImpl implements GroupService{
@@ -21,6 +27,9 @@ public class GroupServiceImpl implements GroupService{
 
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private EntityManager entityManager;
 
     @Override
     public GroupResponse createGroup(GroupRequest groupRequest) {
@@ -166,6 +175,49 @@ public class GroupServiceImpl implements GroupService{
             throw new RuntimeException("Error while deleting group: " + e.getMessage());
         }
     }
+
+    
+	@Override
+	public List<GroupResponse> searchGroup(SerachRequest request) {
+		String field = request.getField();
+		String value = request.getValue();
+		String condition = request.getCondition();
+		int pNo = request.getPage();
+		int pSize = request.getSize();
+		
+		
+		try {
+			String query = "select g from 'group' g where ";   // we have to change group name "\"group\""
+    		switch (condition.toLowerCase()) {
+			case "stratswith":
+				query+="g."+field+" LIKE '"+ value +"'%";
+				break;
+			case "endswith":
+				query+="g."+field+" LIKE '%"+ value  +"'";
+				break;
+			case "contains":
+				query+="g."+field+" LIKE '%"+ value + "%'";
+				break;
+			case "exact":
+				query+="g."+field+" = '"+value+"'";
+				break;
+			default:
+				throw new IllegalArgumentException("Invalid condition: "+condition);
+			}
+    		
+    		TypedQuery<Group> q = entityManager.createQuery(query,Group.class);
+    		q.setFirstResult(pNo*pSize);
+    		q.setMaxResults(pSize);
+    		
+    		List<Group> groups = q.getResultList();
+    		return groups.stream().map(grp -> new GroupResponse(grp.getGroupId(),grp.getGroupName(),grp.getCreatedAt())).collect(Collectors.toList());
+    		
+		}
+		catch (Exception e) {
+			throw new RuntimeException("Error occur during search group filter "+ e.getMessage());
+		}
+
+	}
 
 
 }

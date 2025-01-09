@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "'Group'")
+@Table(name = "'Group'") // we have to change group name "\"group\""
 @Getter
 @Setter
 @AllArgsConstructor
