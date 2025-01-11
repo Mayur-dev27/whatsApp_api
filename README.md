@@ -12,6 +12,7 @@ This project is a **WhatsApp Clone API** built using **Java**, **Spring Boot**, 
 - **Group Chat**: Create and manage group chats.
 - **Message History**: Retrieve chat history for users and groups.
 - **Search Functionality**: Search users, contacts, and messages.
+- **API Documentation**: Integrated Swagger UI for interactive API exploration.
 
 ---
 
@@ -19,6 +20,7 @@ This project is a **WhatsApp Clone API** built using **Java**, **Spring Boot**, 
 
 - **Backend**: Java, Spring Boot
 - **Authentication**: JSON Web Tokens (JWT)
+- **API Documentation**: Swagger
 - **Database**: MySQL (or any other relational database)
 - **ORM**: Hibernate JPA
 - **Build Tool**: Maven
@@ -74,6 +76,15 @@ whatsapp-clone-api/
 
 ---
 
+## API Documentation
+
+Swagger UI has been integrated into this project for easy exploration and testing of API endpoints.
+
+- **Access Swagger UI**: Visit `http://localhost:8080/swagger-ui.html` after running the application.
+- **Swagger Configuration**: The Swagger configuration file is included in the project.
+
+---
+
 ## How to Run
 
 ### Prerequisites
@@ -103,6 +114,7 @@ whatsapp-clone-api/
    mvn spring-boot:run
    ```
 5. Access the API at `http://localhost:8080`.
+6. Open Swagger UI at `http://localhost:8080/swagger-ui.html` to explore the API.
 
 ---
 
@@ -124,5 +136,3 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ## Contributing
 
 Contributions are welcome! If you have suggestions for improvements or find bugs, feel free to create an issue or submit a pull request.
-
-
