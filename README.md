@@ -1,6 +1,6 @@
 # WhatsApp Clone API
 
-This project is a **WhatsApp Clone API** built using **Java**, **Spring Boot**, and **JWT**. It provides core features for a messaging application, including user authentication, contact management, and messaging functionalities. The goal of this project is to demonstrate a scalable backend architecture for a chat application.
+This project is a **WhatsApp Clone API** built using **Java**, **Spring Boot**, **Web Socket** and **JWT**. It provides core features for a messaging application, including user authentication, contact management, and messaging functionalities. The goal of this project is to demonstrate a scalable backend architecture for a chat application.
 
 ---
 
