@@ -4,7 +4,7 @@ This project is a **WhatsApp Clone API** built using **Java**, **Spring Boot**, 
 
 ---
 
-## Features
+## Features 
 
 - **User Authentication**: Register and log in using JWT-based authentication.
 - **Real-Time Messaging**: Send and receive messages in real-time.
