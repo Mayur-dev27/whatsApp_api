@@ -11,7 +11,7 @@ This project is a **WhatsApp Clone API** built using **Java**, **Spring Boot**, 
 - **Contact Management**: Add, remove, and view contacts.
 - **Group Chat**: Create and manage group chats.
 - **Message History**: Retrieve chat history for users and groups.
-- **Search Functionality**: Search users, contacts, and messages. 
+- **Search Functionality**: Search users, contacts, and messages.  
 - **API Documentation**: Integrated Swagger UI for interactive API exploration.
 
 ---
